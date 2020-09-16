@@ -28,5 +28,12 @@ const postSchema = new Schema(
   },
   { timestamps: true }
 );
+postSchema.method("transform", function () {
+  const obj = this.toObject();
+  obj.id = obj._id;
+  delete obj._id;
+
+  return obj;
+});
 
 export default model("Post", postSchema);
