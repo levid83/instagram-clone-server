@@ -43,6 +43,19 @@ class PostController {
       console.log(err);
     }
   }
+
+  async subPosts(req, res) {
+    try {
+      const posts = await Post.find({ postedBy: { $in: req.user.following } })
+        .populate("postedBy", "id name")
+        .populate("comments.postedBy", "id name")
+        .sort("-createdAt")
+        .exec();
+      res.json({ posts });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 export default PostController;

@@ -8,7 +8,7 @@ const postController = new PostController();
 
 router.get("/all-posts", authGuard, postController.allPosts);
 
-router.get("/subpost", authGuard, (req, res) => {});
+router.get("/subposts", authGuard, postController.subPosts);
 
 router.post("/create-post", authGuard, postController.createPost);
 
