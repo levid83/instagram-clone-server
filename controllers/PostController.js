@@ -30,6 +30,19 @@ class PostController {
       console.log(err);
     }
   }
+
+  async allPosts(req, res) {
+    try {
+      const posts = await Post.find()
+        .populate("postedBy", "id name")
+        .populate("comments.postedBy", "id name")
+        .sort("-createdAt")
+        .exec();
+      res.json({ posts });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 export default PostController;

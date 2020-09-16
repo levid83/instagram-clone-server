@@ -6,7 +6,7 @@ const router = express.Router();
 
 const postController = new PostController();
 
-router.get("/all", authGuard, (req, res) => {});
+router.get("/all-posts", authGuard, postController.allPosts);
 
 router.get("/subpost", authGuard, (req, res) => {});
 
