@@ -14,7 +14,18 @@ class PostController {
     });
     try {
       const newPost = await post.save();
-      res.json({ post: newPost });
+      res.status(201).json({ post: newPost });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async myPosts(req, res) {
+    try {
+      const posts = await Post.find({ postedBy: req.user.id })
+        .populate("postedBy", "id name")
+        .exec();
+      res.json({ posts });
     } catch (err) {
       console.log(err);
     }

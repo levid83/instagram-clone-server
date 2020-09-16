@@ -12,7 +12,7 @@ router.get("/subpost", authGuard, (req, res) => {});
 
 router.post("/create-post", authGuard, postController.createPost);
 
-router.get("/my-posts", authGuard, postController.myPost);
+router.get("/my-posts", authGuard, postController.myPosts);
 
 router.put("/like", authGuard, (req, res) => {});
 
