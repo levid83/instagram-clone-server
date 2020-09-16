@@ -16,6 +16,7 @@ const authGuard = (req, res, next) => {
     const { id } = payload;
     try {
       req.user = await User.findById(id);
+      req.user.password = undefined;
       next();
     } catch (err) {
       return res.status(401).json({ error: "you must be logged in" });
