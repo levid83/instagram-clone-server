@@ -1,7 +1,10 @@
 import express from "express";
-const router = express.Router();
+import AuthController from "../controllers/AuthController";
 
-router.post("/signup", (req, res) => {});
+const router = express.Router();
+const authController = new AuthController();
+
+router.post("/signup", authController.signup);
 
 router.post("/signin", (req, res) => {});
 

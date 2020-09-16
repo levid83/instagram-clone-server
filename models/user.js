@@ -15,7 +15,7 @@ const userSchema = new Schema({
   },
   resetToken: String,
   expireToken: Date,
-  pic: {
+  picture: {
     type: String,
     default: "",
   },
