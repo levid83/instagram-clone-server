@@ -1,20 +1,21 @@
-const express = require("express");
+import authGuard from "../middlewares/authGuard";
+import express from "express";
 const router = express.Router();
 
-router.get("/allpost", (req, res) => {});
+router.get("/allpost", authGuard, (req, res) => {});
 
-router.get("/getsubpost", (req, res) => {});
+router.get("/getsubpost", authGuard, (req, res) => {});
 
-router.post("/createpost", (req, res) => {});
+router.post("/createpost", authGuard, (req, res) => {});
 
-router.get("/mypost", (req, res) => {});
+router.get("/mypost", authGuard, (req, res) => {});
 
-router.put("/like", (req, res) => {});
+router.put("/like", authGuard, (req, res) => {});
 
-router.put("/unlike", (req, res) => {});
+router.put("/unlike", authGuard, (req, res) => {});
 
-router.put("/comment", (req, res) => {});
+router.put("/comment", authGuard, (req, res) => {});
 
-router.delete("/deletepost/:postId", (req, res) => {});
+router.delete("/deletepost/:postId", authGuard, (req, res) => {});
 
 export default router;
