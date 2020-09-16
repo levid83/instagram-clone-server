@@ -2,6 +2,10 @@ import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
 
+import authRouter from "./routes/auth";
+import postRouter from "./routes/post";
+import userRouter from "./routes/user";
+
 const app = express();
 
 const PORT = process.env.PORT || 5000;
@@ -18,6 +22,8 @@ app.use(
 );
 
 app.use(express.json());
+
+app.use([authRouter, postRouter, userRouter]);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("build"));
