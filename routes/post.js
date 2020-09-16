@@ -18,7 +18,7 @@ router.put("/like", authGuard, (req, res) => {});
 
 router.put("/unlike", authGuard, (req, res) => {});
 
-router.put("/comment", authGuard, (req, res) => {});
+router.put("/add-comment", authGuard, postController.addComment);
 
 router.delete("/delete-post/:postId", authGuard, (req, res) => {});
 

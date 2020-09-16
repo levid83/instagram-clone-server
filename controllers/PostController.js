@@ -56,6 +56,30 @@ class PostController {
       console.log(err);
     }
   }
+  async addComment(req, res) {
+    console.log("commmmmm");
+    const comment = {
+      text: req.body.text,
+      postedBy: req.user.id,
+    };
+    try {
+      const result = await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $push: { comments: comment },
+        },
+        {
+          new: true,
+        }
+      )
+        .populate("comments.postedBy", "id name")
+        .populate("postedBy", "id name")
+        .exec();
+      res.json(result);
+    } catch (err) {
+      return res.status(422).json({ error: err });
+    }
+  }
 }
 
 export default PostController;
