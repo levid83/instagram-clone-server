@@ -6,13 +6,13 @@ const router = express.Router();
 
 const postController = new PostController();
 
-router.get("/allpost", authGuard, (req, res) => {});
+router.get("/all", authGuard, (req, res) => {});
 
-router.get("/getsubpost", authGuard, (req, res) => {});
+router.get("/subpost", authGuard, (req, res) => {});
 
-router.post("/createpost", authGuard, postController.createPost);
+router.post("/create-post", authGuard, postController.createPost);
 
-router.get("/mypost", authGuard, (req, res) => {});
+router.get("/my-posts", authGuard, postController.myPost);
 
 router.put("/like", authGuard, (req, res) => {});
 
@@ -20,6 +20,6 @@ router.put("/unlike", authGuard, (req, res) => {});
 
 router.put("/comment", authGuard, (req, res) => {});
 
-router.delete("/deletepost/:postId", authGuard, (req, res) => {});
+router.delete("/delete-post/:postId", authGuard, (req, res) => {});
 
 export default router;

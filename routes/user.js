@@ -8,7 +8,7 @@ router.put("/follow", authGuard, (req, res) => {});
 
 router.put("/unfollow", authGuard, (req, res) => {});
 
-router.put("/updatepic", authGuard, (req, res) => {});
+router.put("/update-picture", authGuard, (req, res) => {});
 
 router.post("/search-users", (req, res) => {});
 
