@@ -109,6 +109,23 @@ class PostController {
       return res.status(422).json({ error: err });
     }
   }
+
+  async unlikePost(req, res) {
+    try {
+      const post = await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $pull: { likes: req.user.id },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(post);
+    } catch (err) {
+      return res.status(422).json({ error: err });
+    }
+  }
 }
 
 export default PostController;

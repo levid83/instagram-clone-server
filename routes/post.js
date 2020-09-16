@@ -16,7 +16,7 @@ router.get("/my-posts", authGuard, postController.myPosts);
 
 router.put("/like-post", authGuard, postController.likePost);
 
-router.put("/unlike-post", authGuard, (req, res) => {});
+router.put("/unlike-post", authGuard, postController.unlikePost);
 
 router.put("/add-post-comment", authGuard, postController.addPostComment);
 
