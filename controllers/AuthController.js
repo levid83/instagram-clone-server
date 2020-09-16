@@ -44,7 +44,9 @@ class AuthController {
       if (!doMatch) {
         return res.status(422).json({ error: "invalid credentials" });
       }
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        expiresIn: "2h",
+      });
       const { id, name, email, followers, following, picture } = user;
       res.json({
         token,

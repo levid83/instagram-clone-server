@@ -14,12 +14,12 @@ router.post("/create-post", authGuard, postController.createPost);
 
 router.get("/my-posts", authGuard, postController.myPosts);
 
-router.put("/like", authGuard, (req, res) => {});
+router.put("/like-post", authGuard, postController.likePost);
 
-router.put("/unlike", authGuard, (req, res) => {});
+router.put("/unlike-post", authGuard, (req, res) => {});
 
-router.put("/add-comment", authGuard, postController.addComment);
+router.put("/add-post-comment", authGuard, postController.addPostComment);
 
-router.delete("/delete-post/:postId", authGuard, (req, res) => {});
+router.delete("/delete-post/:postId", authGuard, postController.deletePost);
 
 export default router;

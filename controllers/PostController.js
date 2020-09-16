@@ -56,8 +56,7 @@ class PostController {
       console.log(err);
     }
   }
-  async addComment(req, res) {
-    console.log("commmmmm");
+  async addPostComment(req, res) {
     const comment = {
       text: req.body.text,
       postedBy: req.user.id,
@@ -76,6 +75,36 @@ class PostController {
         .populate("postedBy", "id name")
         .exec();
       res.json(result);
+    } catch (err) {
+      return res.status(422).json({ error: err });
+    }
+  }
+
+  async deletePost(req, res) {
+    try {
+      const result = await Post.deleteOne({
+        _id: req.params.postId,
+        postedBy: req.user.id,
+      });
+      if (result.deletedCount != 1)
+        return res.status(422).json({ error: "post cannot be deleted" });
+    } catch (err) {
+      res.status(422).json({ error: err });
+    }
+  }
+
+  async likePost(req, res) {
+    try {
+      const post = await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $push: { likes: req.user.id },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(post);
     } catch (err) {
       return res.status(422).json({ error: err });
     }
