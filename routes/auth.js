@@ -6,7 +6,7 @@ const authController = new AuthController();
 
 router.post("/signup", authController.signup);
 
-router.post("/signin", (req, res) => {});
+router.post("/signin", authController.signin);
 
 router.post("/reset-password", (req, res) => {});
 
