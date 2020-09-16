@@ -1,8 +1,12 @@
 import authGuard from "../middlewares/authGuard";
 import express from "express";
+import UserController from "../controllers/UserController";
+
 const router = express.Router();
 
-router.get("/user/:id", authGuard, (req, res) => {});
+const userController = new UserController();
+
+router.get("/user/:id", authGuard, userController.getUser);
 
 router.put("/follow", authGuard, (req, res) => {});
 
