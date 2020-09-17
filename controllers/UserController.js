@@ -76,6 +76,20 @@ class UserController {
       return res.status(422).json({ error: err });
     }
   }
+
+  async updatePicture(req, res) {
+    try {
+      const result = await User.findByIdAndUpdate(
+        req.user.id,
+        { $set: { picture: req.body.picture } },
+        { new: true }
+      );
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      return res.status(422).json({ error: "picture cannot be posted" });
+    }
+  }
 }
 
 export default UserController;

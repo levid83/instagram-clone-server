@@ -12,7 +12,7 @@ router.put("/follow-user", authGuard, userController.followUser);
 
 router.put("/unfollow-user", authGuard, userController.unfollowUser);
 
-router.put("/update-picture", authGuard, (req, res) => {});
+router.put("/update-picture", authGuard, userController.updatePicture);
 
 router.post("/search-users", (req, res) => {});
 
