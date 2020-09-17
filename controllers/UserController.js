@@ -18,6 +18,64 @@ class UserController {
       return res.status(422).json({ error: err });
     }
   }
+  async followUser(req, res) {
+    try {
+      await User.findByIdAndUpdate(
+        req.body.followId,
+        {
+          $push: { followers: req.user.id },
+        },
+        {
+          new: true,
+        }
+      );
+    } catch (err) {
+      return res.status(422).json({ error: err });
+    }
+
+    try {
+      const result = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          $push: { following: req.body.followId },
+        },
+        { new: true }
+      ).select("-password");
+
+      res.json(result);
+    } catch (err) {
+      return res.status(422).json({ error: err });
+    }
+  }
+  async unfollowUser(req, res) {
+    try {
+      await User.findByIdAndUpdate(
+        req.body.unfollowId,
+        {
+          $pull: { followers: req.user.id },
+        },
+        {
+          new: true,
+        }
+      );
+    } catch (err) {
+      return res.status(422).json({ error: err });
+    }
+
+    try {
+      const result = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          $pull: { following: req.body.unfollowId },
+        },
+        { new: true }
+      ).select("-password");
+
+      res.json(result);
+    } catch (err) {
+      return res.status(422).json({ error: err });
+    }
+  }
 }
 
 export default UserController;

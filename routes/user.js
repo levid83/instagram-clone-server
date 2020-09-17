@@ -8,9 +8,9 @@ const userController = new UserController();
 
 router.get("/user/:id", authGuard, userController.getUser);
 
-router.put("/follow", authGuard, (req, res) => {});
+router.put("/follow-user", authGuard, userController.followUser);
 
-router.put("/unfollow", authGuard, (req, res) => {});
+router.put("/unfollow-user", authGuard, userController.unfollowUser);
 
 router.put("/update-picture", authGuard, (req, res) => {});
 
