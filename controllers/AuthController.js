@@ -1,6 +1,18 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+
 import User from "../models/user";
+
+var transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  auth: {
+    user: process.env.SMTP_USERNAME,
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
 
 class AuthController {
   async signup(req, res) {
@@ -52,6 +64,66 @@ class AuthController {
         token,
         user: { id, name, email, followers, following, picture },
       });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async _sendPasswordResetEmail(user, token) {}
+
+  async resetPassword(req, res) {
+    crypto.randomBytes(32, async (err, buffer) => {
+      if (err) console.log(err);
+      try {
+        const token = buffer.toString("hex");
+        const user = await User.findOne({ email: req.body.email });
+
+        if (!user) throw new Error();
+
+        user.resetToken = token;
+        user.expireToken = Date.now() + 3600000;
+        await user.save();
+
+        transporter.sendMail({
+          to: user.email,
+          from: "no-replay@test.com",
+          subject: "Password reset",
+          html: `<p>You requested for password reset</p>
+
+             <h5>click <a href="${process.env.APP_HOST}/reset-password/${token}">here</a> to reset your password</h5>`,
+        });
+      } catch (err) {
+        return res.status(422).json({
+          error: "Couldn't reset your password. Please try again.",
+        });
+      }
+      res.json({ message: "Please check your email" });
+    });
+  }
+
+  async newPassword(req, res) {
+    const newPassword = req.body.password;
+    const sentToken = req.body.token;
+    try {
+      const user = await User.findOne({
+        resetToken: sentToken,
+        expireToken: { $gt: Date.now() },
+      });
+
+      if (!user) {
+        return res
+          .status(422)
+          .json({ error: "Session expired. Please try again." });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+      user.password = hashedPassword;
+      user.resetToken = undefined;
+      user.expireToken = undefined;
+
+      await user.save();
+
+      res.json({ message: "Your password has been successfully updated" });
     } catch (err) {
       console.log(err);
     }
