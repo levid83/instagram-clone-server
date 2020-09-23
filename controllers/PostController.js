@@ -29,6 +29,7 @@ class PostController {
     } catch (err) {
       console.log(err);
     }
+    res.json({ posts: [] });
   }
 
   async allPosts(req, res) {
@@ -42,6 +43,7 @@ class PostController {
     } catch (err) {
       console.log(err);
     }
+    res.json({ posts: [] });
   }
 
   async subPosts(req, res) {
@@ -55,6 +57,7 @@ class PostController {
     } catch (err) {
       console.log(err);
     }
+    res.json({ posts: [] });
   }
   async addPostComment(req, res) {
     const comment = {
