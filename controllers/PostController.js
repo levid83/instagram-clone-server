@@ -91,6 +91,7 @@ class PostController {
       });
       if (result.deletedCount != 1)
         return res.status(422).json({ error: "post cannot be deleted" });
+      return res.json({ postId: req.params.postId });
     } catch (err) {
       return res.status(422).json({ error: err });
     }
