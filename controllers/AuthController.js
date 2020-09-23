@@ -34,7 +34,7 @@ class AuthController {
       });
 
       await newUser.save();
-      res.status(201).json({ message: "saved successfully" });
+      return res.status(201).json({ message: "saved successfully" });
     } catch (err) {
       console.log(err);
     }
@@ -60,7 +60,7 @@ class AuthController {
         expiresIn: "2h",
       });
       const { id, name, email, followers, following, picture } = user;
-      res.json({
+      return res.json({
         token,
         user: { id, name, email, followers, following, picture },
       });
@@ -97,7 +97,7 @@ class AuthController {
           error: "Couldn't reset your password. Please try again.",
         });
       }
-      res.json({ message: "Please check your email" });
+      return res.json({ message: "Please check your email" });
     });
   }
 
@@ -123,7 +123,9 @@ class AuthController {
 
       await user.save();
 
-      res.json({ message: "Your password has been successfully updated" });
+      return res.json({
+        message: "Your password has been successfully updated",
+      });
     } catch (err) {
       console.log(err);
     }

@@ -42,7 +42,7 @@ class UserController {
         { new: true }
       ).select("-password");
 
-      res.json(result);
+      return res.json(result);
     } catch (err) {
       return res.status(422).json({ error: err });
     }
@@ -71,7 +71,7 @@ class UserController {
         { new: true }
       ).select("-password");
 
-      res.json(result);
+      return res.json(result);
     } catch (err) {
       return res.status(422).json({ error: err });
     }
@@ -84,7 +84,7 @@ class UserController {
         { $set: { picture: req.body.picture } },
         { new: true }
       );
-      res.json(result);
+      return res.json(result);
     } catch (err) {
       console.log(err);
       return res.status(422).json({ error: "picture cannot be posted" });

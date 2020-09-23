@@ -14,7 +14,7 @@ class PostController {
     });
     try {
       const newPost = await post.save();
-      res.status(201).json({ post: newPost });
+      return res.status(201).json({ post: newPost });
     } catch (err) {
       console.log(err);
     }
@@ -25,11 +25,11 @@ class PostController {
       const posts = await Post.find({ postedBy: req.user.id })
         .populate("postedBy", "id name")
         .exec();
-      res.json({ posts });
+      return res.json({ posts });
     } catch (err) {
       console.log(err);
     }
-    res.json({ posts: [] });
+    return res.json({ posts: [] });
   }
 
   async allPosts(req, res) {
@@ -39,11 +39,11 @@ class PostController {
         .populate("comments.postedBy", "id name")
         .sort("-createdAt")
         .exec();
-      res.json({ posts });
+      return res.json({ posts });
     } catch (err) {
       console.log(err);
     }
-    res.json({ posts: [] });
+    return res.json({ posts: [] });
   }
 
   async subPosts(req, res) {
@@ -53,11 +53,11 @@ class PostController {
         .populate("comments.postedBy", "id name")
         .sort("-createdAt")
         .exec();
-      res.json({ posts });
+      return res.json({ posts });
     } catch (err) {
       console.log(err);
     }
-    res.json({ posts: [] });
+    return res.json({ posts: [] });
   }
   async addPostComment(req, res) {
     const comment = {
@@ -77,7 +77,7 @@ class PostController {
         .populate("comments.postedBy", "id name")
         .populate("postedBy", "id name")
         .exec();
-      res.json(result);
+      return res.json(result);
     } catch (err) {
       return res.status(422).json({ error: err });
     }
@@ -92,7 +92,7 @@ class PostController {
       if (result.deletedCount != 1)
         return res.status(422).json({ error: "post cannot be deleted" });
     } catch (err) {
-      res.status(422).json({ error: err });
+      return res.status(422).json({ error: err });
     }
   }
 
@@ -107,7 +107,7 @@ class PostController {
           new: true,
         }
       );
-      res.json(post);
+      return res.json(post);
     } catch (err) {
       return res.status(422).json({ error: err });
     }
@@ -124,7 +124,7 @@ class PostController {
           new: true,
         }
       );
-      res.json(post);
+      return res.json(post);
     } catch (err) {
       return res.status(422).json({ error: err });
     }
