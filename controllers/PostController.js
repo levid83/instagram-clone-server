@@ -24,7 +24,9 @@ class PostController {
     try {
       const posts = await Post.find({ postedBy: req.user.id })
         .populate("postedBy", "id name")
-        .exec();
+        .populate("comments.postedBy", "id name")
+        .sort("-createdAt");
+
       return res.json({ posts });
     } catch (err) {
       console.log(err);
@@ -37,8 +39,8 @@ class PostController {
       const posts = await Post.find()
         .populate("postedBy", "id name")
         .populate("comments.postedBy", "id name")
-        .sort("-createdAt")
-        .exec();
+        .sort("-createdAt");
+
       return res.json({ posts });
     } catch (err) {
       console.log(err);
@@ -51,8 +53,8 @@ class PostController {
       const posts = await Post.find({ postedBy: { $in: req.user.following } })
         .populate("postedBy", "id name")
         .populate("comments.postedBy", "id name")
-        .sort("-createdAt")
-        .exec();
+        .sort("-createdAt");
+
       return res.json({ posts });
     } catch (err) {
       console.log(err);
@@ -74,9 +76,9 @@ class PostController {
           new: true,
         }
       )
-        .populate("comments.postedBy", "id name")
         .populate("postedBy", "id name")
-        .exec();
+        .populate("comments.postedBy", "id name")
+        .sort("-createdAt");
       return res.json(result);
     } catch (err) {
       return res.status(422).json({ error: err });
@@ -107,7 +109,10 @@ class PostController {
         {
           new: true,
         }
-      );
+      )
+        .populate("postedBy", "id name")
+        .populate("comments.postedBy", "id name")
+        .sort("-createdAt");
       return res.json(post);
     } catch (err) {
       return res.status(422).json({ error: err });
@@ -124,7 +129,10 @@ class PostController {
         {
           new: true,
         }
-      );
+      )
+        .populate("postedBy", "id name")
+        .populate("comments.postedBy", "id name")
+        .sort("-createdAt");
       return res.json(post);
     } catch (err) {
       return res.status(422).json({ error: err });
