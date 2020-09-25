@@ -88,7 +88,6 @@ class UserController {
       );
       return res.json(result);
     } catch (err) {
-      console.log(err);
       return res.status(422).json({ error: "picture cannot be posted" });
     }
   }

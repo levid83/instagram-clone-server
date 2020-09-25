@@ -36,7 +36,9 @@ class AuthController {
       await newUser.save();
       return res.status(201).json({ message: "saved successfully" });
     } catch (err) {
-      console.log(err);
+      return res
+        .status(403)
+        .json({ error: "Couldn't sign up. Please try again." });
     }
   }
 
@@ -65,7 +67,9 @@ class AuthController {
         user: { _id, name, email, followers, following, picture },
       });
     } catch (err) {
-      console.log(err);
+      return res
+        .status(403)
+        .json({ error: "Couldn't sign in. Please try again." });
     }
   }
 
@@ -73,7 +77,11 @@ class AuthController {
 
   async resetPassword(req, res) {
     crypto.randomBytes(32, async (err, buffer) => {
-      if (err) console.log(err);
+      if (err) {
+        return res.status(422).json({
+          error: "Couldn't reset your password. Please try again.",
+        });
+      }
       try {
         const token = buffer.toString("hex");
         const user = await User.findOne({ email: req.body.email });
@@ -127,7 +135,9 @@ class AuthController {
         message: "Your password has been successfully updated",
       });
     } catch (err) {
-      console.log(err);
+      return res
+        .status(422)
+        .json({ error: "Error on password reset. Please try again." });
     }
   }
 }

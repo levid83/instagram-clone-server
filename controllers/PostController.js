@@ -16,7 +16,7 @@ class PostController {
       const newPost = await post.save();
       return res.status(201).json({ post: newPost });
     } catch (err) {
-      console.log(err);
+      return res.status(422).json({ error: err });
     }
   }
 
@@ -27,11 +27,11 @@ class PostController {
         .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
 
+      if (!posts) return res.json({ posts: [] });
       return res.json({ posts });
     } catch (err) {
-      console.log(err);
+      return res.status(404).json({ error: err });
     }
-    return res.json({ posts: [] });
   }
 
   async allPosts(req, res) {
@@ -40,12 +40,11 @@ class PostController {
         .populate("postedBy", "_id name")
         .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
-
+      if (!posts) return res.json({ posts: [] });
       return res.json({ posts });
     } catch (err) {
-      console.log(err);
+      return res.status(404).json({ error: err });
     }
-    return res.json({ posts: [] });
   }
 
   async subPosts(req, res) {
@@ -54,12 +53,11 @@ class PostController {
         .populate("postedBy", "_id name")
         .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
-
+      if (!posts) return res.json({ posts: [] });
       return res.json({ posts });
     } catch (err) {
-      console.log(err);
+      return res.status(404).json({ error: err });
     }
-    return res.json({ posts: [] });
   }
   async addPostComment(req, res) {
     const comment = {
@@ -118,7 +116,6 @@ class PostController {
         .sort("-createdAt");
       return res.json(post);
     } catch (err) {
-      console.log(err);
       return res.status(422).json({ error: err });
     }
   }
