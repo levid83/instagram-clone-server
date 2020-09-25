@@ -11,8 +11,10 @@ class UserController {
     }
     try {
       posts = await Post.find({ postedBy: req.params.id })
-        .populate("postedBy", "id name")
-        .exec();
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
+        .sort("-createdAt");
+
       return res.json({ user, posts });
     } catch (err) {
       return res.status(422).json({ error: err });
@@ -23,7 +25,7 @@ class UserController {
       await User.findByIdAndUpdate(
         req.body.followId,
         {
-          $push: { followers: req.user.id },
+          $push: { followers: req.user._id },
         },
         {
           new: true,
@@ -35,7 +37,7 @@ class UserController {
 
     try {
       const result = await User.findByIdAndUpdate(
-        req.user.id,
+        req.user._id,
         {
           $push: { following: req.body.followId },
         },
@@ -52,7 +54,7 @@ class UserController {
       await User.findByIdAndUpdate(
         req.body.unfollowId,
         {
-          $pull: { followers: req.user.id },
+          $pull: { followers: req.user._id },
         },
         {
           new: true,
@@ -64,7 +66,7 @@ class UserController {
 
     try {
       const result = await User.findByIdAndUpdate(
-        req.user.id,
+        req.user._id,
         {
           $pull: { following: req.body.unfollowId },
         },
@@ -80,7 +82,7 @@ class UserController {
   async updatePicture(req, res) {
     try {
       const result = await User.findByIdAndUpdate(
-        req.user.id,
+        req.user._id,
         { $set: { picture: req.body.picture } },
         { new: true }
       );

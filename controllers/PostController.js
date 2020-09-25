@@ -22,9 +22,9 @@ class PostController {
 
   async myPosts(req, res) {
     try {
-      const posts = await Post.find({ postedBy: req.user.id })
-        .populate("postedBy", "id name")
-        .populate("comments.postedBy", "id name")
+      const posts = await Post.find({ postedBy: req.user._id })
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
 
       return res.json({ posts });
@@ -37,8 +37,8 @@ class PostController {
   async allPosts(req, res) {
     try {
       const posts = await Post.find()
-        .populate("postedBy", "id name")
-        .populate("comments.postedBy", "id name")
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
 
       return res.json({ posts });
@@ -51,8 +51,8 @@ class PostController {
   async subPosts(req, res) {
     try {
       const posts = await Post.find({ postedBy: { $in: req.user.following } })
-        .populate("postedBy", "id name")
-        .populate("comments.postedBy", "id name")
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
 
       return res.json({ posts });
@@ -64,7 +64,7 @@ class PostController {
   async addPostComment(req, res) {
     const comment = {
       text: req.body.text,
-      postedBy: req.user.id,
+      postedBy: req.user._id,
     };
     try {
       const result = await Post.findByIdAndUpdate(
@@ -76,8 +76,8 @@ class PostController {
           new: true,
         }
       )
-        .populate("postedBy", "id name")
-        .populate("comments.postedBy", "id name")
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
       return res.json(result);
     } catch (err) {
@@ -89,7 +89,7 @@ class PostController {
     try {
       const result = await Post.deleteOne({
         _id: req.params.postId,
-        postedBy: req.user.id,
+        postedBy: req.user._id,
       });
       if (result.deletedCount != 1)
         return res.status(422).json({ error: "post cannot be deleted" });
@@ -104,14 +104,14 @@ class PostController {
       const post = await Post.findByIdAndUpdate(
         req.body.postId,
         {
-          $push: { likes: req.user.id },
+          $push: { likes: req.user._id },
         },
         {
           new: true,
         }
       )
-        .populate("postedBy", "id name")
-        .populate("comments.postedBy", "id name")
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
       return res.json(post);
     } catch (err) {
@@ -124,14 +124,14 @@ class PostController {
       const post = await Post.findByIdAndUpdate(
         req.body.postId,
         {
-          $pull: { likes: req.user.id },
+          $pull: { likes: req.user._id },
         },
         {
           new: true,
         }
       )
-        .populate("postedBy", "id name")
-        .populate("comments.postedBy", "id name")
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
         .sort("-createdAt");
       return res.json(post);
     } catch (err) {
