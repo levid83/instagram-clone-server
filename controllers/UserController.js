@@ -17,9 +17,22 @@ class UserController {
 
       return res.json({ user, posts });
     } catch (err) {
-      return res.status(422).json({ error: err });
+      return res.status(404).json({ error: err });
     }
   }
+
+  async searchUser(req, res) {
+    try {
+      let userPattern = new RegExp("^" + req.body.query);
+      let users = await User.find({ email: { $regex: userPattern } }).select(
+        "_id email"
+      );
+      return res.json({ users });
+    } catch (err) {
+      return res.status(404).json({ error: err });
+    }
+  }
+
   async followUser(req, res) {
     try {
       await User.findByIdAndUpdate(

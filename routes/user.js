@@ -14,6 +14,6 @@ router.put("/unfollow-user", authGuard, userController.unfollowUser);
 
 router.put("/update-picture", authGuard, userController.updatePicture);
 
-router.post("/search-users", (req, res) => {});
+router.post("/search-users", userController.searchUser);
 
 export default router;
