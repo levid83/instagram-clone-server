@@ -101,8 +101,11 @@ class PostController {
 
   async likePost(req, res) {
     try {
-      const post = await Post.findByIdAndUpdate(
-        req.body.postId,
+      const post = await Post.findOneAndUpdate(
+        {
+          _id: req.body.postId,
+          likes: { $not: { $elemMatch: { $eq: req.user._id } } },
+        },
         {
           $push: { likes: req.user._id },
         },
@@ -115,6 +118,7 @@ class PostController {
         .sort("-createdAt");
       return res.json(post);
     } catch (err) {
+      console.log(err);
       return res.status(422).json({ error: err });
     }
   }
