@@ -3,8 +3,14 @@ import Post from "../models/post";
 class PostController {
   async createPost(req, res) {
     const { title, body, picture } = req.body;
-    if (!title || !body || !picture) {
-      return res.status(422).json({ error: "Plase add all the fields" });
+    if (!title) {
+      return res.status(422).json({ error: "Title is missing" });
+    }
+    if (!body) {
+      return res.status(422).json({ error: "Post content is missing" });
+    }
+    if (!picture) {
+      return res.status(422).json({ error: "Picture is missing" });
     }
     const post = new Post({
       title,

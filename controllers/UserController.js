@@ -27,7 +27,7 @@ class UserController {
       let users = await User.find({ email: { $regex: userPattern } }).select(
         "_id email"
       );
-      return res.json({ users });
+      return res.json(users);
     } catch (err) {
       return res.status(404).json({ error: err });
     }
