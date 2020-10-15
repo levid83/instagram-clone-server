@@ -17,13 +17,31 @@ var transporter = nodemailer.createTransport({
 class AuthController {
   async signup(req, res) {
     const { name, email, password, picture } = req.body;
-    if (!email || !password || !name) {
-      return res.status(422).json({ error: "please add all the fields" });
+    if (name.length < 1) {
+      return res.status(422).json({ error: "Please enter your name" });
+    }
+    if (
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      )
+    ) {
+      return res.status(422).json({ error: "Invalid email address" });
+    }
+
+    if (
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/.test(
+        password
+      )
+    ) {
+      return res.status(422).json({ error: "Password is too weak" });
+    }
+    if (!picture) {
+      return res.status(422).json({ error: "Missing profile picture" });
     }
     try {
       const duplicatedUser = await User.findOne({ email });
       if (duplicatedUser) {
-        return res.status(422).json({ error: "invalid credentials" });
+        return res.status(422).json({ error: "Invalid credentials" });
       }
       const hashedPassword = await bcrypt.hash(password, 12);
       const newUser = new User({
@@ -34,7 +52,9 @@ class AuthController {
       });
 
       await newUser.save();
-      return res.status(201).json({ message: "saved successfully" });
+      return res
+        .status(201)
+        .json({ message: "You have been successfully signed up" });
     } catch (err) {
       return res
         .status(403)
@@ -45,18 +65,18 @@ class AuthController {
   async signin(req, res) {
     const { password, email: userEmail } = req.body;
     if (!userEmail || !password) {
-      return res.status(422).json({ error: "email or password is missing" });
+      return res.status(422).json({ error: "Email or password is missing" });
     }
     try {
       const user = await User.findOne({ email: userEmail });
       if (!user) {
-        return res.status(422).json({ error: "invalid credentials" });
+        return res.status(422).json({ error: "Invalid credentials" });
       }
 
       const doMatch = await bcrypt.compare(password, user.password);
 
       if (!doMatch) {
-        return res.status(422).json({ error: "invalid credentials" });
+        return res.status(422).json({ error: "Invalid credentials" });
       }
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "2h",
