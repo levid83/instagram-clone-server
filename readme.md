@@ -1,6 +1,6 @@
 ## Description
 
-This is a React front-end application for the [Instagram clone](https://github.com/levid83/instagram-clone-server) demo project.
+**Instagram clone** - a simple photo sharing social networking web application
 
 ## Features
 
