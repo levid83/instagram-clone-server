@@ -118,7 +118,7 @@ class AuthController {
           subject: "Password reset",
           html: `<p>You requested for password reset</p>
 
-             <h5>click <a href="${process.env.APP_HOST}/reset-password/${token}">here</a> to reset your password</h5>`,
+             <h5>click <a href="${process.env.APP_URI}/reset-password/${token}">here</a> to reset your password</h5>`,
         });
       } catch (err) {
         return res.status(422).json({

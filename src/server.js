@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: [process.env.ALLOWED_CORS_ORIGIN],
+    origin: [process.env.APP_URI],
     methods: "GET,PUT,POST,PATCH,DELETE,OPTIONS",
     allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization",
     preflightContinue: false,
